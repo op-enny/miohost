@@ -19,8 +19,3 @@ dist/
 # Logs
 *.log
 npm-debug.log*
-
-# Large media files (keep in cloud storage)
-*.mp4
-*.mov
-*.avi
