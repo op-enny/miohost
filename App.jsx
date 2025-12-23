@@ -2426,8 +2426,10 @@ export default function App() {
                   <video
                     src="/mioHost_runway.mp4"
                     autoPlay
+                    muted
                     playsInline
                     onEnded={() => setIntroPhase("done")}
+                    onError={() => setIntroPhase("done")}
                     className="h-full w-full object-cover"
                   />
                 </div>
