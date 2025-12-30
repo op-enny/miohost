@@ -1381,7 +1381,7 @@ function Button({ children, onClick, variant = "primary", className, disabled, t
       disabled={disabled}
       onClick={onClick}
       className={cx(
-        "rounded-full px-4 py-2 text-sm font-semibold tracking-tight transition active:scale-[0.99]",
+        "rounded-full px-4 py-2 text-base font-semibold tracking-tight transition active:scale-[0.99]",
         styles[variant],
         className
       )}
@@ -1419,28 +1419,24 @@ function Header({ lang, setLang, scanned, setScanned, setStep }) {
   }, [lang]);
 
   return (
-    <div className="relative flex flex-col gap-4 md:flex-row md:items-end md:justify-between overflow-visible">
-      <div>
-        <div className="flex items-center gap-4">
-          <div className="h-12 w-12 rounded-full bg-white/5 ring-1 ring-white/20 grid place-items-center overflow-hidden">
-            <img src={miohostChars} alt="miohost" className="h-full w-full object-cover" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-white font-['Fraunces']">
-              {t.title}
-            </h1>
-            <p className="text-sm text-emerald-100/80 max-w-xl">{t.subtitle}</p>
-          </div>
+    <div className="relative flex items-center justify-between gap-3 overflow-visible">
+      <div className="flex items-center gap-3">
+        <div className="h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/20 grid place-items-center overflow-hidden">
+          <img src={miohostChars} alt="miohost" className="h-full w-full object-cover" />
         </div>
+        <h1 className="text-xl font-semibold tracking-tight text-white font-['Fraunces']">
+          {t.title}
+        </h1>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <div className="rounded-full bg-emerald-400/10 text-emerald-100 ring-1 ring-emerald-200/20 px-3 py-1 text-xs">
+        <div className="rounded-full bg-emerald-400/10 text-emerald-100 ring-1 ring-emerald-200/20 px-2.5 py-0.5 text-sm">
           {t.qr}: <b className="font-semibold">{scanned ? "ON" : "OFF"}</b>
         </div>
 
         <Button
           variant="subtle"
+          className="px-3 py-1.5"
           onClick={() => {
             const next = lang === LANGS.EN ? LANGS.DE : LANGS.EN;
             setLang(next);
@@ -1452,17 +1448,19 @@ function Header({ lang, setLang, scanned, setScanned, setStep }) {
 
         {!scanned ? (
           <Button
+            className="px-3 py-1.5"
             onClick={() => {
               setScanned(true);
               setStep("chat");
               localStorage.setItem(LS_KEYS.scanned, "1");
             }}
           >
-            📷 Simulate QR scan
+            📷 Simulate QR
           </Button>
         ) : (
           <Button
             variant="subtle"
+            className="px-3 py-1.5"
             onClick={() => {
               setScanned(false);
               localStorage.setItem(LS_KEYS.scanned, "0");
@@ -1476,27 +1474,32 @@ function Header({ lang, setLang, scanned, setScanned, setStep }) {
   );
 }
 
-function ChatBubble({ tone = "bot", children }) {
+function ChatBubble({ tone = "bot", children, roomNumber = "205" }) {
   if (tone === "bot") {
     return (
       <div className="flex items-end gap-2">
-        <div className="max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed bg-white/10 text-white ring-1 ring-white/10">
-          {children}
+        <div className="h-7 w-7 shrink-0 rounded-full overflow-hidden ring-1 ring-amber-200/30 bg-gradient-to-b from-amber-100 to-amber-200">
+          <img src={miohostChars} alt="miohost" className="h-full w-full object-cover" />
         </div>
-        <div className="h-8 w-8 rounded-full overflow-hidden ring-1 ring-white/20 bg-white/5">
-          <img src={miohostChars} alt="miohost avatar" className="h-full w-full object-cover" />
+        <div className="max-w-[80%] rounded-2xl rounded-bl-md px-4 py-2.5 text-base leading-relaxed bg-gradient-to-b from-amber-50 to-amber-100 text-slate-800 shadow-sm">
+          {children}
         </div>
       </div>
     );
   }
   return (
-    <div
-      className={cx(
-        "max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
-        "bg-gradient-to-b from-amber-100 to-amber-200 text-slate-900 ml-auto"
-      )}
-    >
-      {children}
+    <div className="flex items-end gap-2 justify-end">
+      <div
+        className={cx(
+          "max-w-[80%] rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-relaxed",
+          "bg-white/10 text-white ring-1 ring-white/10"
+        )}
+      >
+        {children}
+      </div>
+      <div className="h-7 w-7 shrink-0 rounded-full bg-emerald-500/20 ring-1 ring-emerald-300/30 grid place-items-center">
+        <span className="text-xs font-semibold text-emerald-100">{roomNumber}</span>
+      </div>
     </div>
   );
 }
@@ -1509,7 +1512,7 @@ function SystemBubble({ children, tone = "neutral" }) {
     low: "bg-rose-500/15 text-rose-100 ring-1 ring-rose-300/30",
   };
   return (
-    <div className={cx("inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs", tones[tone])}>
+    <div className={cx("inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm", tones[tone])}>
       {children}
     </div>
   );
@@ -1517,7 +1520,7 @@ function SystemBubble({ children, tone = "neutral" }) {
 
 function TypingIndicator({ lang }) {
   return (
-    <div className="flex items-center gap-2 text-xs text-emerald-100/70">
+    <div className="flex items-center gap-2 text-sm text-emerald-100/80">
       <span className="inline-flex items-center gap-1">
         <span className="h-2 w-2 rounded-full bg-emerald-200/70 animate-bounce" />
         <span className="h-2 w-2 rounded-full bg-emerald-200/70 animate-bounce [animation-delay:120ms]" />
@@ -1539,13 +1542,13 @@ function SuggestionCard({ title, confidence, onClick }) {
     <button
       onClick={onClick}
       className={cx(
-        "flex flex-col items-start gap-2 rounded-2xl border px-4 py-3 text-left text-sm transition hover:-translate-y-0.5 hover:shadow-[0_16px_35px_-22px_rgba(0,0,0,0.9)]",
+        "flex flex-col items-start gap-2 rounded-2xl border px-4 py-3 text-left text-base transition hover:-translate-y-0.5 hover:shadow-[0_16px_35px_-22px_rgba(0,0,0,0.9)]",
         tones[confidence]
       )}
     >
-      <div className="text-xs uppercase tracking-wide opacity-70">Intent</div>
+      <div className="text-sm uppercase tracking-wide opacity-80">Intent</div>
       <div className="text-base font-semibold">{title}</div>
-      <div className="text-xs opacity-70">Confidence: {confidence.toUpperCase()}</div>
+      <div className="text-sm opacity-80">Confidence: {confidence.toUpperCase()}</div>
     </button>
   );
 }
@@ -1603,8 +1606,8 @@ function MarkerItem({ marker, lang, isActive, onSelectMarker }) {
       }}
     >
       <Popup>
-        <div className="text-sm font-semibold">{marker.label[lang]}</div>
-        <div className="text-xs">{marker.address[lang]}</div>
+        <div className="text-base font-semibold">{marker.label[lang]}</div>
+        <div className="text-sm">{marker.address[lang]}</div>
       </Popup>
     </Marker>
   );
@@ -1614,86 +1617,92 @@ function MapWidgetCard({ lang, title, subtitle, markers, listMarkers, activeMark
   const renderMarkers = listMarkers && listMarkers.length ? listMarkers : markers;
   const activeMarker = renderMarkers.find((m) => m.id === activeMarkerId) || null;
   const hasList = listMarkers && listMarkers.length;
+  const [showMap, setShowMap] = useState(false);
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white">
-      <div className="text-xs uppercase tracking-wide text-emerald-100/60">Map</div>
-      <div className="mt-1 text-base font-semibold">{title}</div>
-      {subtitle ? <div className="mt-1 text-emerald-100/70">{subtitle}</div> : null}
-      <div
-        className={cx(
-          "mt-3 overflow-hidden rounded-xl border border-white/10",
-          "block"
-        )}
-      >
-        <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="h-64 w-full md:h-56">
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MapFocus center={MAP_CENTER} activeMarker={activeMarker} />
-          {renderMarkers.map((marker) => (
-            <MarkerItem
-              key={marker.id}
-              marker={marker}
-              lang={lang}
-              isActive={marker.id === activeMarkerId}
-              onSelectMarker={onSelectMarker}
-            />
-          ))}
-        </MapContainer>
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-base text-white">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-semibold">{title}</div>
+        <button
+          onClick={() => setShowMap(!showMap)}
+          className="text-xs text-emerald-200/70 hover:text-emerald-200 flex items-center gap-1"
+        >
+          🗺️ {showMap ? (lang === "EN" ? "Hide map" : "Karte ausblenden") : (lang === "EN" ? "Show map" : "Karte zeigen")}
+        </button>
       </div>
+
+      {showMap && (
+        <div className="mt-2 overflow-hidden rounded-xl border border-white/10">
+          <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="h-40 w-full">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MapFocus center={MAP_CENTER} activeMarker={activeMarker} />
+            {renderMarkers.map((marker) => (
+              <MarkerItem
+                key={marker.id}
+                marker={marker}
+                lang={lang}
+                isActive={marker.id === activeMarkerId}
+                onSelectMarker={onSelectMarker}
+              />
+            ))}
+          </MapContainer>
+        </div>
+      )}
+
       {hasList ? (
-        <div className="mt-3 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory">
+        <div
+          className="mt-2 overflow-x-scroll pb-2 scrollbar-hide"
+          style={{
+            display: 'flex',
+            gap: '8px',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
+        >
           {listMarkers.map((marker) => {
             const isActive = marker.id === activeMarkerId;
             return (
               <button
                 key={marker.id}
-                onClick={() => onSelectMarker?.(marker.id)}
+                onClick={() => {
+                  onSelectMarker?.(marker.id);
+                  setShowMap(true);
+                }}
                 className={cx(
-                  "min-w-[75%] md:min-w-[45%] snap-start flex items-start justify-between gap-3 rounded-2xl border px-3 py-2 text-left text-xs transition",
+                  "rounded-xl border px-2.5 py-2 text-left text-sm transition shrink-0",
+                  "w-[140px] sm:w-[180px] md:w-[220px]",
                   isActive
-                    ? "border-emerald-300/50 bg-emerald-400/10 text-emerald-100"
-                    : "border-white/10 bg-white/5 text-emerald-100/80"
+                    ? "border-emerald-300/50 bg-emerald-400/10"
+                    : "border-white/10 bg-white/5"
                 )}
               >
-                <div>
-                  <div className="text-sm font-semibold text-white">{marker.label[lang]}</div>
-                  <div className="mt-1 text-emerald-100/70">{marker.address[lang]}</div>
-                  {marker.cuisine ? (
-                    <div className="mt-1 text-emerald-100/60">
-                      {lang === "EN" ? "Cuisine: " : "Küche: "}
-                      {marker.cuisine[lang]}
-                    </div>
-                  ) : null}
-                  {marker.phone ? (
-                    <div className="mt-1 text-emerald-100/60">
-                      {lang === "EN" ? "Phone: " : "Telefon: "}
-                      {marker.phone}
-                    </div>
-                  ) : null}
-                  {marker.orderUrl ? (
-                    <a
-                      href={marker.orderUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1 inline-flex text-amber-100 hover:text-amber-200"
-                    >
-                      {lang === "EN" ? "Order online" : "Online bestellen"}
-                    </a>
-                  ) : null}
-                  {marker.siteUrl ? (
-                    <a
-                      href={marker.siteUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1 inline-flex text-emerald-100/80 hover:text-emerald-100"
-                    >
-                      {lang === "EN" ? "Website" : "Webseite"}
-                    </a>
-                  ) : null}
+                <div className="font-medium text-white truncate">{marker.label[lang]}</div>
+                {marker.cuisine && (
+                  <div className="text-xs text-emerald-100/60 mt-0.5">{marker.cuisine[lang]}</div>
+                )}
+                <div className="hidden sm:block mt-1 text-xs text-emerald-100/50 truncate">
+                  {marker.address[lang]}
                 </div>
-                <span className="text-xs opacity-70">Map →</span>
+                {marker.phone && (
+                  <div className="hidden md:block mt-0.5 text-xs text-emerald-100/50">
+                    {marker.phone}
+                  </div>
+                )}
+                {marker.orderUrl && (
+                  <a
+                    href={marker.orderUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="mt-1.5 inline-block text-xs text-amber-200/80 hover:text-amber-200"
+                  >
+                    🛵 {lang === "EN" ? "Order" : "Bestellen"}
+                  </a>
+                )}
               </button>
             );
           })}
@@ -1718,13 +1727,13 @@ function Chip({ icon, label, onClick, tone = "primary", forceLabel = false, hide
       title={label}
       aria-label={label}
       className={cx(
-        "group inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(0,0,0,0.8)] sm:px-4 sm:py-2 sm:text-sm",
+        "group inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-18px_rgba(0,0,0,0.8)] sm:px-4 sm:py-2.5 sm:text-base",
         tones[tone]
       )}
     >
       <span className={iconClass}>{icon}</span>
       <span className={labelClass}>{label}</span>
-      <span className="hidden sm:inline text-xs opacity-60 group-hover:opacity-90">→</span>
+      <span className="hidden sm:inline text-sm opacity-70 group-hover:opacity-100">→</span>
     </button>
   );
 }
@@ -1733,7 +1742,7 @@ function FlowPanel({ lang, step, stepIndex, totalSteps, onSelect, onBack }) {
   if (!step) return null;
   return (
     <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-      <div className="flex items-center justify-between text-xs text-emerald-100/60">
+      <div className="flex items-center justify-between text-sm text-emerald-100/70">
         <span>{lang === "EN" ? "Next step" : "Nächster Schritt"}</span>
         <span>
           {lang === "EN" ? "Step" : "Schritt"} {stepIndex + 1}/{totalSteps}
@@ -1754,7 +1763,7 @@ function FlowPanel({ lang, step, stepIndex, totalSteps, onSelect, onBack }) {
       </div>
       {stepIndex > 0 ? (
         <div className="mt-3">
-          <Button variant="ghost" className="text-xs" onClick={onBack}>
+          <Button variant="ghost" className="text-sm" onClick={onBack}>
             {lang === "EN" ? "Back to previous step" : "Zurück zum vorherigen Schritt"}
           </Button>
         </div>
@@ -1770,10 +1779,10 @@ function ServiceFlow({ lang, service, onSubmit }) {
 
   return (
     <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-      <div className="text-sm font-semibold text-white">
+      <div className="text-base font-semibold text-white">
         {SERVICE_LABELS[service.id][lang]} · {service.price[lang]}
       </div>
-      <div className="mt-3 rounded-2xl bg-white/5 p-3 text-xs text-emerald-100/80 ring-1 ring-white/10">
+      <div className="mt-3 rounded-2xl bg-white/5 p-3 text-sm text-emerald-100/90 ring-1 ring-white/10">
         <div>{lang === "EN" ? "Room: 205" : "Zimmer: 205"}</div>
         <div>{lang === "EN" ? "Date: flexible" : "Datum: flexibel"}</div>
         <div>{lang === "EN" ? "Time: flexible" : "Uhrzeit: flexibel"}</div>
@@ -1799,29 +1808,29 @@ function ReceptionMessageWidget({ lang, topic, initialMessage = "", onSubmit, on
 
   return (
     <div className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-      <div className="text-sm font-semibold text-white">
+      <div className="text-base font-semibold text-white">
         {lang === "EN" ? "Message to reception" : "Nachricht an die Rezeption"}
       </div>
       {topic ? (
-        <div className="mt-2 inline-flex rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-100 ring-1 ring-emerald-200/30">
+        <div className="mt-2 inline-flex rounded-full bg-emerald-400/10 px-3 py-1.5 text-sm text-emerald-100 ring-1 ring-emerald-200/30">
           {lang === "EN" ? "Topic: " : "Thema: "}
           {topic[lang]}
         </div>
       ) : null}
       <div className="mt-4 space-y-3">
         <div>
-          <label className="text-xs uppercase tracking-wide text-emerald-100/60">
+          <label className="text-sm uppercase tracking-wide text-emerald-100/70">
             {lang === "EN" ? "Room number" : "Zimmernummer"}
           </label>
           <input
             value={room}
             onChange={(e) => setRoom(e.target.value)}
             placeholder={lang === "EN" ? "e.g. 205" : "z. B. 205"}
-            className="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-emerald-100/40 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+            className="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-emerald-100/50 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
           />
         </div>
         <div>
-          <label className="text-xs uppercase tracking-wide text-emerald-100/60">
+          <label className="text-sm uppercase tracking-wide text-emerald-100/70">
             {lang === "EN" ? "Your message" : "Deine Nachricht"}
           </label>
           <textarea
@@ -1829,7 +1838,7 @@ function ReceptionMessageWidget({ lang, topic, initialMessage = "", onSubmit, on
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder={lang === "EN" ? "Type your message..." : "Nachricht eingeben..."}
-            className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-emerald-100/40 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
+            className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-emerald-100/50 focus:outline-none focus:ring-2 focus:ring-emerald-300/40"
           />
         </div>
       </div>
@@ -2078,40 +2087,20 @@ function ChatDemo({ lang }) {
   };
 
   return (
-    <div className="space-y-5">
-      <Card className="p-5">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <div className="text-sm text-emerald-100/80">{lang === "EN" ? "Live Virtual Receptionist" : "Live Virtuelle Rezeption"}</div>
-            <div className="text-xl font-semibold text-white font-['Fraunces']">
-              {lang === "EN" ? "Personalized help, instantly" : "Persönliche Hilfe, sofort"}
+    <div className="space-y-3">
+      <Card className="p-0 overflow-hidden flex flex-col h-[calc(100vh-100px)] md:h-[calc(100vh-120px)]">
+        <div className="border-b border-white/10 px-3 py-1.5 flex items-center justify-between bg-[#0b0f0e]/95 backdrop-blur-sm shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 rounded-full bg-white/5 ring-1 ring-white/20 grid place-items-center overflow-hidden">
+              <img src={miohostChars} alt="miohost" className="h-full w-full object-cover" />
             </div>
-            <p className="mt-1 text-sm text-emerald-100/70">
-              {lang === "EN"
-                ? "Short answers, clear next steps, and optional service booking."
-                : "Kurze Antworten, klare nächste Schritte, optional mit Buchung."}
-            </p>
+            <span className="text-sm font-medium text-white">miohost</span>
+            <span className="text-xs text-emerald-200/60">24/7</span>
           </div>
-          <div className="flex flex-wrap gap-2 text-xs">
-            <SystemBubble>⚡ {lang === "EN" ? "Avg. 2.4s response" : "Ø 2,4s Antwortzeit"}</SystemBubble>
-            <SystemBubble>🌍 {lang === "EN" ? "Multi-language" : "Mehrsprachig"}</SystemBubble>
-            <SystemBubble>🔒 {lang === "EN" ? "GDPR-ready" : "DSGVO-ready"}</SystemBubble>
-          </div>
-        </div>
-      </Card>
-
-      <Card className="p-0 overflow-hidden">
-        <div className="border-b border-white/10 p-4 flex items-center justify-between">
-          <div>
-            <div className="text-sm text-white font-semibold">{lang === "EN" ? "Chat" : "Chat"}</div>
-            <div className="text-xs text-emerald-100/70">
-              {lang === "EN" ? "24/7 virtual receptionist · no app install" : "24/7 Virtuelle Rezeption · keine App"}
-            </div>
-          </div>
-          <div className="text-xs text-emerald-100/70">Room 205</div>
+          <div className="text-xs text-emerald-100/60">205</div>
         </div>
 
-        <div ref={scrollerRef} className="h-[440px] overflow-y-auto px-4 pb-6 pt-4 space-y-3">
+        <div ref={scrollerRef} className="flex-1 overflow-y-auto px-4 pb-4 pt-3 space-y-3 min-h-[300px]">
           {messages.map((m) => {
             if (m.type === "system") {
               return (
@@ -2136,7 +2125,7 @@ function ChatDemo({ lang }) {
             }
             if (m.type === "map") {
               return (
-                <div key={m.id} className="max-w-[78%]">
+                <div key={m.id} className="w-full">
                   <MapWidgetCard
                     lang={lang}
                     title={m.map.title[lang]}
@@ -2158,30 +2147,30 @@ function ChatDemo({ lang }) {
           {isThinking ? <TypingIndicator lang={lang} /> : null}
           {serviceResult ? (
             <div className="rounded-2xl bg-emerald-500/10 p-4 ring-1 ring-emerald-400/20 text-emerald-100">
-              <div className="text-sm font-semibold">{lang === "EN" ? "Request sent" : "Anfrage gesendet"}</div>
-              <div className="mt-1 text-sm">
+              <div className="text-base font-semibold">{lang === "EN" ? "Request sent" : "Anfrage gesendet"}</div>
+              <div className="mt-1 text-base">
                 {lang === "EN"
                   ? `Room ${serviceResult.room} • ${serviceResult.date || "Flexible"} ${serviceResult.time || ""}`
                   : `Zimmer ${serviceResult.room} • ${serviceResult.date || "Flexibel"} ${serviceResult.time || ""}`}
               </div>
               {serviceResult.notes ? (
-                <div className="mt-2 text-xs text-emerald-200/80">{serviceResult.notes}</div>
+                <div className="mt-2 text-sm text-emerald-200/90">{serviceResult.notes}</div>
               ) : null}
             </div>
           ) : null}
           {messageResult ? (
             <div className="rounded-2xl bg-emerald-500/10 p-4 ring-1 ring-emerald-400/20 text-emerald-100">
-              <div className="text-sm font-semibold">{lang === "EN" ? "Message sent" : "Nachricht gesendet"}</div>
-              <div className="mt-1 text-sm">
+              <div className="text-base font-semibold">{lang === "EN" ? "Message sent" : "Nachricht gesendet"}</div>
+              <div className="mt-1 text-base">
                 {lang === "EN" ? `Room ${messageResult.room}` : `Zimmer ${messageResult.room}`}
               </div>
               {messageResult.topic ? (
-                <div className="mt-2 text-xs text-emerald-200/80">
+                <div className="mt-2 text-sm text-emerald-200/90">
                   {lang === "EN" ? "Topic: " : "Thema: "}
                   {messageResult.topic[lang]}
                 </div>
               ) : null}
-              <div className="mt-2 text-xs text-emerald-200/80">{messageResult.message}</div>
+              <div className="mt-2 text-sm text-emerald-200/90">{messageResult.message}</div>
             </div>
           ) : null}
           {activeService ? (
@@ -2228,72 +2217,35 @@ function ChatDemo({ lang }) {
           ) : null}
         </div>
 
-        <div className="border-t border-white/10 p-4 space-y-4">
-          <div>
-            <div className="text-xs uppercase tracking-wide text-emerald-100/60">
-              {lang === "EN" ? "Suggested prompts" : "Vorschläge"}
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={lastIntentId || "quick"}
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                className="mt-3 flex flex-wrap gap-2"
+        <div className="border-t border-white/10 px-3 py-2 flex items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {(lastIntentId && CONTEXT_CHIPS[lastIntentId]
+              ? CONTEXT_CHIPS[lastIntentId]
+              : QUICK_CHIPS
+            ).map((chip, idx) => (
+              <button
+                key={chip.id}
+                onClick={() => processUserText(chip.prompt[lang])}
+                className={cx(
+                  "rounded-full bg-white/5 ring-1 ring-white/10 hover:bg-white/10 transition",
+                  "h-9 w-9 flex items-center justify-center text-lg sm:w-auto sm:px-3 sm:py-1.5 sm:gap-1.5",
+                  idx >= 4 && "hidden sm:flex"
+                )}
+                title={chip.label[lang]}
               >
-                {(lastIntentId && CONTEXT_CHIPS[lastIntentId]
-                  ? CONTEXT_CHIPS[lastIntentId]
-                  : QUICK_CHIPS
-                ).map((chip, idx) => (
-                  <motion.div key={chip.id} custom={idx} variants={chipVariants}>
-                    <Chip
-                      icon={chip.icon}
-                      label={chip.label[lang]}
-                      onClick={() => processUserText(chip.prompt[lang])}
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-            {lastIntentId && CONTEXT_CHIPS[lastIntentId] ? null : (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key="secondary"
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="mt-3 flex flex-wrap gap-2"
-                >
-                  {SECONDARY_CHIPS.map((chip, idx) => (
-                    <motion.div key={chip.id} custom={idx} variants={chipVariants}>
-                      <Chip
-                        icon={chip.icon}
-                        label={chip.label[lang]}
-                        tone="secondary"
-                        onClick={() => processUserText(chip.prompt[lang])}
-                      />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            )}
-            <div className="mt-3 flex justify-end">
-              <Button variant="cta" className="text-xs" onClick={resetToStart}>
-                {lang === "EN" ? "Back to start" : "Zur Startansicht"}
-              </Button>
-            </div>
+                <span>{chip.icon}</span>
+                <span className="hidden sm:inline text-sm text-emerald-100/90">{chip.label[lang]}</span>
+              </button>
+            ))}
           </div>
-
-          <div className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-emerald-100/80 ring-1 ring-white/10">
-            {lang === "EN" ? "Choose a chip below to continue." : "Unten einen Chip wählen, um fortzufahren."}
-          </div>
-          <div className="flex justify-between items-center text-xs text-emerald-100/60">
-            <span>
-              {lang === "EN"
-                ? "Privacy first: No chat history stored without consent (GDPR-ready)."
-                : "Datenschutz: Keine Speicherung ohne Einwilligung (DSGVO-ready)."}
-            </span>
-          </div>
+          <button
+            onClick={resetToStart}
+            className="h-9 px-2 sm:px-3 rounded-full bg-white/5 ring-1 ring-white/10 flex items-center justify-center gap-1.5 text-sm text-emerald-100/60 hover:bg-white/10 transition shrink-0"
+            title={lang === "EN" ? "Reset" : "Zurück"}
+          >
+            <span>↩</span>
+            <span className="hidden sm:inline">{lang === "EN" ? "Reset" : "Zurück"}</span>
+          </button>
         </div>
       </Card>
     </div>
@@ -2374,6 +2326,13 @@ export default function App() {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
       `}</style>
       <AnimatePresence>
         {introPhase !== "done" ? (
@@ -2395,7 +2354,7 @@ export default function App() {
                   miohost
                 </motion.div>
                 <motion.div
-                  className="mt-2 text-sm uppercase tracking-[0.4em] text-emerald-200/70"
+                  className="mt-2 text-base uppercase tracking-[0.4em] text-emerald-200/80"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
@@ -2443,16 +2402,50 @@ export default function App() {
         <div className="pointer-events-none absolute -bottom-40 -right-32 h-96 w-96 rounded-full bg-amber-400/15 blur-[120px]" />
         <div className="pointer-events-none absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-sky-400/10 blur-[120px]" />
 
-        <div className="mx-auto max-w-5xl px-4 py-8 md:py-10">
-          <Header
-            lang={lang}
-            setLang={setLang}
-            scanned={scanned}
-            setScanned={setScanned}
-            setStep={setStep}
-          />
+        <div className="mx-auto max-w-5xl px-4 py-3 md:py-4">
+          {!scanned ? (
+            <Header
+              lang={lang}
+              setLang={setLang}
+              scanned={scanned}
+              setScanned={setScanned}
+              setStep={setStep}
+            />
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-white/5 ring-1 ring-white/20 grid place-items-center overflow-hidden">
+                  <img src={miohostChars} alt="miohost" className="h-full w-full object-cover" />
+                </div>
+                <span className="text-base font-semibold text-white font-['Fraunces']">miohost</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="subtle"
+                  className="px-2.5 py-1 text-sm"
+                  onClick={() => {
+                    const next = lang === LANGS.EN ? LANGS.DE : LANGS.EN;
+                    setLang(next);
+                    localStorage.setItem(LS_KEYS.lang, next);
+                  }}
+                >
+                  🌐 {lang === LANGS.EN ? "DE" : "EN"}
+                </Button>
+                <Button
+                  variant="subtle"
+                  className="px-2.5 py-1 text-sm"
+                  onClick={() => {
+                    setScanned(false);
+                    localStorage.setItem(LS_KEYS.scanned, "0");
+                  }}
+                >
+                  ✕
+                </Button>
+              </div>
+            </div>
+          )}
 
-          <div className="mt-6 md:mt-8">
+          <div className="mt-3 md:mt-4">
             {!scanned ? (
               <Card className="p-7 md:p-10">
                 <div className="flex items-start justify-between gap-4">
@@ -2460,9 +2453,9 @@ export default function App() {
                     <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
                       {t.notScannedTitle}
                     </h2>
-                    <p className="mt-2 text-emerald-100/70">{t.notScannedSub}</p>
+                    <p className="mt-2 text-base text-emerald-100/80">{t.notScannedSub}</p>
                     <div className="mt-4">
-                      <div className="inline-flex items-center gap-2 rounded-full bg-amber-400/10 text-amber-100 ring-1 ring-amber-200/30 px-3 py-1 text-xs">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-amber-400/10 text-amber-100 ring-1 ring-amber-200/30 px-3 py-1.5 text-sm">
                         📷 {t.continueHint}
                       </div>
                     </div>
@@ -2490,18 +2483,20 @@ export default function App() {
               </AnimatePresence>
             )}
           </div>
-          <div className="mt-10 flex justify-center">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                localStorage.removeItem(LS_KEYS.lang);
-                localStorage.removeItem(LS_KEYS.scanned);
-                window.location.href = window.location.pathname;
-              }}
-            >
-              ↩️ {t.reset}
-            </Button>
-          </div>
+          {!scanned && (
+            <div className="mt-8 flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  localStorage.removeItem(LS_KEYS.lang);
+                  localStorage.removeItem(LS_KEYS.scanned);
+                  window.location.href = window.location.pathname;
+                }}
+              >
+                ↩️ {t.reset}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
