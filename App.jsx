@@ -176,19 +176,31 @@ const QUICK_CHIPS = [
     id: "wifi",
     icon: "🔐",
     label: { EN: "Wi-Fi password", DE: "WLAN-Passwort" },
-    prompt: { EN: "What’s the Wi-Fi password?", DE: "Wie lautet das WLAN-Passwort?" },
+    prompt: { EN: "What's the Wi-Fi password?", DE: "Wie lautet das WLAN-Passwort?" },
   },
   {
-    id: "laundry",
-    icon: "🧺",
-    label: { EN: "Laundry room", DE: "Waschmaschine" },
-    prompt: { EN: "Where can I do laundry?", DE: "Wo kann ich Wäsche waschen?" },
+    id: "local",
+    icon: "📍",
+    label: { EN: "Local tips", DE: "Tipps in der Nähe" },
+    prompt: { EN: "Any good restaurants nearby?", DE: "Gibt es gute Restaurants in der Nähe?" },
   },
   {
     id: "late",
     icon: "🕓",
     label: { EN: "Late checkout", DE: "Late Check-out" },
     prompt: { EN: "Can I get a late checkout?", DE: "Kann ich später auschecken?" },
+  },
+  {
+    id: "repair",
+    icon: "🛠️",
+    label: { EN: "Report an issue", DE: "Defekt melden" },
+    prompt: { EN: "The heating is not working.", DE: "Die Heizung funktioniert nicht." },
+  },
+  {
+    id: "laundry",
+    icon: "🧺",
+    label: { EN: "Laundry room", DE: "Waschmaschine" },
+    prompt: { EN: "Where can I do laundry?", DE: "Wo kann ich Wäsche waschen?" },
   },
   {
     id: "breakfast",
@@ -201,12 +213,6 @@ const QUICK_CHIPS = [
     icon: "🚗",
     label: { EN: "Parking info", DE: "Parken" },
     prompt: { EN: "Do you have parking?", DE: "Gibt es Parkplätze?" },
-  },
-  {
-    id: "repair",
-    icon: "🛠️",
-    label: { EN: "Report an issue", DE: "Defekt melden" },
-    prompt: { EN: "The heating is not working.", DE: "Die Heizung funktioniert nicht." },
   },
 ];
 
